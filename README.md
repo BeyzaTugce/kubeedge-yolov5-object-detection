@@ -45,7 +45,7 @@ docker push gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1
 
 ### Select the Docker image from Container Registry and deploy on Cloud Run
 ```
-gcloud run deploy flaskapp-cr-v1 \
+gcloud run deploy yolov5_detection_flask_app-v1 \
  --image gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1 \
  --region us-east1 \
  --platform managed \
