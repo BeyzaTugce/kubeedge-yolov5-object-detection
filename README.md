@@ -19,29 +19,36 @@ All the image predictions are saved as pandas dataframe and converted to JSON ob
 ## Setup and Run
 
 ### Setup GCP account
-'''
+```
 gcloud config set account $MY_EMAIL_ADDRESS
 gcloud auth login $MY_EMAIL_ADDRESS
 gcloud config set project $MY_PROJECT_ID
-'''
+```
 ### Build a Docker image of the Flask application
 
-server
-├── app.py
-├── requirements.txt
-└── Dockerfile
 
-'''
+server -- |
+          - app.py
+          |     This code runs the flask server
+          |
+          - requirements.txt
+          |     This file is to install the dependencies
+          |
+          - Dockerfile
+          |     This file is to build the Docker image
+          |
+
+```
 docker build -t gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1 .
 docker push gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1
-'''
+```
 
 ### Select the Docker image from Container Registry and deploy on Cloud Run
-'''
+```
 gcloud run deploy flaskapp-cr-v1 \
  --image gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1 \
  --region us-east1 \
  --platform managed \
  --memory 512Mi
-'''
+```
 
