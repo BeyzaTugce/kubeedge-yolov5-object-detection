@@ -16,17 +16,7 @@ The URL of Google Cloud Run that the docker image of the server is deployed shou
 The Flask server listens image requests on port 5000 and runs yolov5 object detection. This project loads a pretrained YOLOv5 model from PyTorch Hub. 
 All the image predictions are saved as pandas dataframe and converted to JSON object. Then, the HTTP response is sent to the client.
 
-## Setup and Run
-
-### Setup GCP account
 ```
-gcloud config set account $MY_EMAIL_ADDRESS
-gcloud auth login $MY_EMAIL_ADDRESS
-gcloud config set project $MY_PROJECT_ID
-```
-### Build a Docker image of the Flask application
-
-
 server -- |
           - app.py
           |     This code runs the flask server
@@ -37,6 +27,17 @@ server -- |
           - Dockerfile
           |     This file is to build the Docker image
           |
+```
+
+## Setup and Run
+
+### Setup GCP account
+```
+gcloud config set account $MY_EMAIL_ADDRESS
+gcloud auth login $MY_EMAIL_ADDRESS
+gcloud config set project $MY_PROJECT_ID
+```
+### Build a Docker image of the Flask application
 
 ```
 docker build -t gcr.io/$MY_PROJECT_ID/yolov5_detection_flask_app:v1 .
