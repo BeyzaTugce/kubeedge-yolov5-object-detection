@@ -22,7 +22,6 @@ scipy
 torch
 torchaudio
 torchvision
-tornados
+tornado
 tqdm
 Werkzeug
-uwsgi
