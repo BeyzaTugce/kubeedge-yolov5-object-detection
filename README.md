@@ -12,10 +12,12 @@ There are two modules
 The client reads images from the Images directory then converts each image to sendable format and stores as a JSON file in the format of JSON array [{"image": img_byte}, {}, ...]
 The URL of Edge Node that the docker image of the server is deployed should be given in case of testing the deployment.
 
+```
 client -- |
           - client.py
           |     This code converts images to sendable format and stores in JSON then sends requests to the Flask server.
           |
+```
 
 ### Server
 The Flask server running yolov5 object detection listens image requests on port 5000 and routes to /detect endpoint. This project loads a pretrained YOLOv5 model from PyTorch Hub. 
