@@ -5,12 +5,13 @@ import cv2
 import requests
 import glob
 
-# Write the URL of Google Cloud Run that the docker image of the server is deployed
-CLOUD_RUN_URL = ""
+# Write the URL of Edge Node that the docker image of the server is deployed
+EDGE_NODE_URL = ""
 
 def send_image():
     """
-    Sending images saved from OpenCDA simulation to the Flask server deployed to the Google Cloud Run listening image requests on port 5000 and running yolov5 object detection
+    Sending images saved from OpenCDA simulation to the Flask server deployed to the KubeEdge nodes or 
+    remote cloud server listening image requests on port 5000 and running yolov5 object detection
     
     Returns: 
     --------  
@@ -29,7 +30,7 @@ def send_image():
     img_json = json.dumps(images)
 
     #Send HTTP request
-    response = requests.post(f"{CLOUD_RUN_URL}/detect", data=img_json)
+    response = requests.post(f"{EDGE_NODE_URL}/detect", data=img_json)
 
     objects = json.loads(response.text)
     for img_obj in objects:

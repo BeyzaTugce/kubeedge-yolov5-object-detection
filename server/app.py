@@ -1,24 +1,41 @@
-import numpy as np
-import json
 import base64
-import cv2
-import torch
+import json
 
-from flask import Flask, request, Response
+import cv2
+import numpy as np
+import psutil
+import torch
+from flask import Flask, Response, request
+from prometheus_client import Counter, Gauge, make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 # Initialize the Flask application
 app = Flask(__name__)
 
+# Add prometheus wsgi middleware to route /metrics requests
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
+
+# Create a metric to track time spent, requests counts and resource usage.
+REQUEST_TIME = Gauge('request_processing_seconds', 'Time spent processing request')
+REQUEST_COUNT = Counter('http_requests_total', 'Total post requests', ['method', 'endpoint'])
+SYSTEM_USAGE = Gauge('system_usage', 'Current system resource usage', ['resource_type'])
 
 @app.route("/detect", methods=["POST"])
+@REQUEST_TIME.time()
 def detect_objects():
     """
     Flas server listening image requests on port 5000 and running yolov5 object detection
     
-    Returns: s
+    Returns: 
     --------  
     response: Flask Responsess
     """
+    REQUEST_COUNT.labels('post', '/detect').inc()
+    SYSTEM_USAGE.labels('cpu utilization').set(psutil.cpu_percent())
+    SYSTEM_USAGE.labels('mem usage').set(psutil.virtual_memory().used)
+    SYSTEM_USAGE.labels('available mem').set(psutil.virtual_memory().available)
 
     request_json = request.data.decode()
     images = json.loads(request_json)
